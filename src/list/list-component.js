@@ -10,7 +10,6 @@ const renderItems = (todoList) => {
 
 export const List = () => {
   const { todoList } = useTodoList();
-  console.log(todoList)
 
   return (
     <div>
