@@ -1,0 +1,24 @@
+.form-controls-container {
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+}
+.count {
+  width: 105px;
+  text-align: left;
+  font-size: 1rem;
+}
+.filters {
+  display: flex;
+  justify-content: center;
+  width: 325px;
+}
+.filters > button {
+  margin: 0 0.45rem;
+}
+.clearAll {
+  width: 150px;
+}
+.clearAll > button {
+  margin: 0;
+  margin-left: auto;
+}

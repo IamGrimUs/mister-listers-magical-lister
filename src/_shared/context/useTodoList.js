@@ -1,7 +1,5 @@
 import * as React from 'react'
 
-// const dummyData = [{title: "hello", id: "1", status: "active"}, {title: "hello1", description: "world1", id: "2", status: "inactive"}, {title: "hello4", description: "world2", id: "4", status: "active"}]
-
 const { createContext, useContext, useState } = React;
 
 const DEFAULT_LIST_CONTEXT = {

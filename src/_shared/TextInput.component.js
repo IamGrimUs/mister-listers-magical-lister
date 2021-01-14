@@ -8,8 +8,11 @@ export const TextInput = () => {
   const { todoList, setTodoList } = useTodoList();
 
   const passItemToList = (e) => {
+    if (!inputValue) {
+      return
+    }
     e.preventDefault();
-    let tempObj = { title: inputValue, id: Date.now(), status: 'active' }
+    let tempObj = { title: inputValue, id: Date.now(), status: 'active', hide: false}
     let tempArray = [...todoList, tempObj]
     setTodoList(tempArray);
     setInputValue('');
@@ -18,7 +21,7 @@ export const TextInput = () => {
   return (
     <div>
       <form onSubmit={passItemToList}>
-        <input text="type" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <input text="type" placeholder="Something needs doing?"  value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
       </form>
     </div>
   )
