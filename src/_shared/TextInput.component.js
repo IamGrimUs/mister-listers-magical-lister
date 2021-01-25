@@ -12,7 +12,7 @@ export const TextInput = () => {
       return
     }
     e.preventDefault();
-    let tempObj = { title: inputValue, id: Date.now(), status: 'active', hide: false}
+    let tempObj = { title: inputValue, id: Date.now(), status: 'active'}
     let tempArray = [...todoList, tempObj]
     setTodoList(tempArray);
     setInputValue('');

@@ -3,7 +3,7 @@ import { ListContextProvider } from './_shared/context/useTodoList'
 import { Title } from './_shared/Title.component'
 import { Footer } from './_shared/Footer.component'
 import { TextInput } from './_shared/TextInput.component'
-import {List} from './list/list-component'
+import {List} from './list/list.component'
 import './App.css';
 
 function App() {
