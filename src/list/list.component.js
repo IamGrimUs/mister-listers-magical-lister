@@ -6,86 +6,30 @@ import { useTodoList } from '../_shared/context/useTodoList'
 const { useState, useEffect } = React
 
 export const List = () => {
-  const [isComplete, setIsComplete] = useState([])
-  const [itemCount, setItemCount] = useState(0)
-  const [tempList, setTempList] = useState([])
-  const { todoList, setTodoList, filterTerm, setFilterTerm } = useTodoList();
+  const [ acitveItemCount, setActiveItemCount ] = useState(0)
+  const [ showDeleteComplete, setShowDeleteComplete ] = useState(false)
+  const [ renderList, setRenderList ] = useState([])
+  const { todoList, setTodoList } = useTodoList()
 
   useEffect(() => {
-    setTempList([...todoList])
+    setRenderList([...todoList])
   }, [todoList])
 
-  // useEffect(() => {
-  //   setItemCount(0)
-  //   tempList.forEach((item) => {
-  //     console.log(item)
-  //     if (item.status === 'active') {
-  //       setItemCount(itemCount + 1)
-  //     }
-  //     if (item.status === 'complete') {
-  //       setItemCount(itemCount - 1)
-  //     }
-  //     if (itemCount <= 0) {
-  //       setItemCount(0)
-  //     }
-  //   })
-  // }, [tempList])
+  useEffect(() => {
+    const tempList = todoList.filter((item) => item.status === 'active')
+    setActiveItemCount(tempList.length)
+    tempList.length < todoList.length ? setShowDeleteComplete(true) : setShowDeleteComplete(false)
+  }, [todoList])
 
-  // useEffect(() => {
-  //   if (filterTerm === 'all') {
-  //     let tempArray = []
-  //     todoList.forEach((item) => {
-  //       item.hide = false;
-  //       tempArray.push(item)
-  //     })
-  //     setTodoList(tempArray)
-  //   }
-  //    if (filterTerm === 'active') {
-  //     let tempArray = []
-  //     todoList.forEach((item) => {
-  //       if (item.status === 'active') {
-  //         item.hide = false
-  //       } else {
-  //         item.hide = true
-  //         console.log(item)
-  //       }
-  //       tempArray.push(item)
-  //     })
-  //      setTodoList(tempArray)
-  //   }
-  //   if (filterTerm === 'complete') {
-  //     let tempArray = []
-  //     todoList.forEach((item) => {
-  //       if (item.status === 'complete') {
-  //         item.hide = false;
-  //       } else {
-  //         item.hide = true;
-  //       }
-  //       tempArray.push(item)
-  //     })
-  //     setTodoList(tempArray)
-  //   }
-  // }, [filterTerm])
+  const changeItemStatus = (id) => {
+    const tempList = [...todoList]
+    const index = tempList.findIndex(item => item.id === id)
 
-  // const checkForComplete = () => {
-  //   todoList.forEach((item) => {
-  //     if (item.status === 'complete') {
-  //       const tempArray = []
-  //       tempArray.push(item.status)
-  //       setIsComplete([...tempArray])
-  //     }
-  //   })
-  // }
-
-  const changeItemStatus = (id, status) => {
-    todoList.forEach((item) => {
-      if (item.id !== id) {
-        setTempList([...tempList, item])
-      } else {
-        item.status = status === 'active' ? 'complete' : 'active';
-        setTempList([...tempList, item])
-      }
-    })
+    if (tempList[index].status === 'active') {
+      tempList[index]['status'] = 'complete'
+    } else {
+      tempList[index]['status'] = 'active'
+    }
     setTodoList([...tempList])
   }
 
@@ -99,14 +43,20 @@ export const List = () => {
     setTodoList([...tempList])
   }
 
-  const filterSelection = (term) => {
-    setFilterTerm(term)
-    console.log(filterTerm)
+  const filterListItems = (term) => {
+    if (term === 'all') {
+      setRenderList([...todoList])
+      return;
+    }
+    const filterList = todoList.filter((item) => {
+      return item.status === term
+    })
+    setRenderList([...filterList])
   }
 
-  const renderItems = (todoList) => {
-    return todoList.map((item) => {
-      return <Item key={item.id} title={item.title} id={item.id} status={item.status} onCheck={changeItemStatus} onRemoveItem={removeItem} hide={item.hide} />
+  const renderItems = () => {
+    return renderList.map((item) => {
+      return <Item key={item.id} title={item.title} id={item.id} status={item.status} onChecked={changeItemStatus} onRemoveItem={removeItem} />
     })
   }
 
@@ -114,7 +64,7 @@ export const List = () => {
     <div>
       {renderItems(todoList)}
       {todoList.length >= 1 && (
-        <ListControls itemCount={itemCount} onRemoveAllComplete={removeAllComplete} isComplete={isComplete} onFilter={filterSelection} />
+        <ListControls activeItems={acitveItemCount} onRemoveAllComplete={removeAllComplete} onFilter={filterListItems} isComplete={showDeleteComplete} />
       )}
     </div>
   )
